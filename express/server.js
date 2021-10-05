@@ -7,9 +7,19 @@ const bodyParser = require('body-parser');
 
 const router = express.Router();
 router.get('/', (req, res) => {
+  var cache = [];
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.write('<h1>REQUEST:</h1>');
-  res.write('<pre>'+JSON.stringify(req)+'</pre>');
+  res.write('<pre>'+JSON.stringify(req, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      // Duplicate reference found, discard key
+      if (cache.includes(value)) return;
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  })+'</pre>');
+  cache = null; 
   console.log("Request:");
   console.log(req)
   res.end();
