@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
       cache.push(value);
     }
     return value;
-  })+'</pre>');
+  },2)+'</pre>');
   cache = null; 
   console.log("Request:");
   console.log(req)
